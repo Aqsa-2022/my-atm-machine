@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    h3 {
+        text-align: center;
+    }
+
+    h4 {
+        text-align: center;
+    }
+
+    h5 {
+        text-align: center;
+        line-height: 0.8;
+    }
+
+    form {
+        text-align: center;
+    }
+
+    .intro {
+        background-color: aquamarine;
+        height: 800px;
+    }
+
+    
+
+
+</style>
+
+<body>
+    <div class="intro"><h1>ATM Machine</h1>
+    <hr>
+    <form onsubmit="checkPin(); return false">
+        Enter your pin: 
+        <input type="number" id="userinputpin" required>
+        <button>Confirm</button>
+    </form>
+
+
+    <h4 id="errormessage"> </h4>
+
+    <div id="homescreen"> 
+    </div>
+
+    <h4 id="withdrawmessage"></h4>
+    <h5 id="totallimit"></h5>
+    <h5 id="totalcash"></h5>
+    <h5 id="totalatm"></h5>
+</div>
+       <script>
+        let moneybox = 22000; //atm machine money box
+        let carddailylimit = 20000;
+        let accountbalance = 50000;
+
+        function checkPin() {
+            console.log("I am checking pin");
+
+            let userinputpin = document.querySelector("#userinputpin").value;
+
+            if(userinputpin.length < 4){
+            document.querySelector("#errormessage").innerHTML = "You must enter 4 digit pin number";
+            return;
+
+            }
+
+            if(userinputpin.length > 4){
+            document.querySelector("#errormessage").innerHTML = "You must enter 4 digit pin number";
+            return;
+
+            }
+
+            if(userinputpin === "5112"){
+            document.querySelector("#errormessage").innerHTML = "Correct pin number";
+            document.getElementById("homescreen").innerHTML = `
+            <form onsubmit="withdraw(); return false">
+                <hr>
+                <h3>Withdraw</h3>
+                Enter your amount to withdraw: 
+                <input type="number" id="userinputamount" required>
+                <button>Withdraw</button>
+                <h4>Enter multiples of 500</h4>
+            
+            </form>
+            `
+            return;
+            }   
+            if(userinputpin !== "5112"){
+            document.querySelector("#errormessage").innerHTML = "Incorrect pin";
+            return;
+            }            
+        }
+
+    function withdraw() {
+        let amount = document.querySelector("#userinputamount").value;
+        if (amount > moneybox) {
+            document.querySelector("#withdrawmessage").innerHTML = "The ATM Machine does not have enough cash.";
+        }
+
+        if (amount <= carddailylimit) {
+            document.querySelector("#withdrawmessage").innerHTML = "Withdrawal successful"
+            document.querySelector("#totallimit").innerHTML = "You can now withdraw Rs" + (carddailylimit - amount);
+            document.querySelector("#totalcash").innerHTML = "Your bank balance is Rs" + (accountbalance - amount);
+            document.querySelector("#totalatm").innerHTML = "Bank has now Rs" + (moneybox - amount);
+
+        }
+
+        if (amount > carddailylimit) {
+            document.querySelector("#withdrawmessage").innerHTML = "You cant withdraw not more than 20000.";
+        }
+    }    
+    </script>
+</body>
+</html>
